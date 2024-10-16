@@ -1,0 +1,29 @@
+{
+  "name": "contracts-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
+    "@nomicfoundation/hardhat-viem": "^2.0.3",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^20.11.24",
+    "hardhat": "^2.22.9",
+    "ts-node": "^10.9.2",
+    "viem": "^2.20.0"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "^1.2.0",
+    "@nomicfoundation/hardhat-ignition-viem": "^0.15.6",
+    "@openzeppelin/contracts": "^5.0.2",
+    "dotenv": "^16.4.5"
+  }
+}
