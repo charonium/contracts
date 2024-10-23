@@ -2,12 +2,8 @@ import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 import { parseEther } from "viem";
 
 const TokenModule = buildModule("TokenModule", (m) => {
-
-  // Deploy LetheWhitelist
-  const letheWhitelist = m.contract("LetheWhitelist", [m.getParameter("deployerAddress", m.getAccount(0))]);
-
   // Deploy Token
-  const letheToken = m.contract("Lethe", [letheWhitelist]);
+  const letheToken = m.contract("Lethe", []);
 
   // Deploy ICO Contract
   const icoContract = m.contract("ICOContract", [letheToken]);
@@ -45,7 +41,7 @@ const TokenModule = buildModule("TokenModule", (m) => {
 
   // Add addresses to whitelist
   whitelistedAddresses.forEach((address, index) => {
-    m.call(letheWhitelist, "addToWhitelist", [address], {
+    m.call(letheToken, "addToWhitelist", [address], {
       id: `whitelist_${index}`
     });
   });
@@ -53,13 +49,17 @@ const TokenModule = buildModule("TokenModule", (m) => {
 
   // Distribute tokens
   allocations.forEach((allocation, index) => {
-    const transferFuture = m.call(letheToken, "transfer", [
-      allocation.address,
-      allocation.amount
-    ], {
-      id: `transfer_${allocation.name}_${index}`
-    });
-    console.log(`Transferred ${allocation.amount.toString()} tokens to ${allocation.name}`);
+    try {
+      const transferFuture = m.call(letheToken, "transfer", [
+        allocation.address,
+        allocation.amount
+      ], {
+        id: `transfer_${allocation.name}_${index}`
+      });
+      console.log(`Transferred ${allocation.amount.toString()} tokens to ${allocation.name}`);
+    } catch (error) {
+      console.error(`Failed to transfer to ${allocation.name}:`, error);
+    }
   });
 
   // Log total distribution
@@ -77,7 +77,7 @@ const TokenModule = buildModule("TokenModule", (m) => {
   // m.call(icoContract, "startICO", [icoDuration]);
   // console.log("ICO started");
 
-  return { letheWhitelist, letheToken, icoContract, tokenLock };
+  return { letheToken, icoContract, tokenLock };
 
 });
 

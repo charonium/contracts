@@ -10,7 +10,7 @@ contract ICOContract is Ownable {
     uint256 public icoStartBlock;
     uint256 public icoEndBlock;
     bool public icoActive;
-    uint256 public constant VESTING_PERIOD = 365 days;
+    uint256 public constant VESTING_PERIOD = 240 days;
     uint256 private constant BLOCKS_PER_DAY = 43200; // Assuming 2 second block time
 
     AggregatorV3Interface private ethUsdPriceFeed;
@@ -56,10 +56,10 @@ contract ICOContract is Ownable {
         return (uint256(ethUsdPrice) * 1e8) / uint256(109130000);
     }
 
-    function initiate(uint256 durationInBlocks) external onlyOwner {
+    function initiate(uint256 endBlock) external onlyOwner {
         require(!icoActive, "ICO is already active");
         icoStartBlock = block.number;
-        icoEndBlock = block.number + durationInBlocks;
+        icoEndBlock = endBlock;
         icoActive = true;
         emit IcoStarted(icoStartBlock, icoEndBlock);
     }
@@ -171,13 +171,13 @@ contract ICOContract is Ownable {
         return nextReleaseBlock > vestingEndBlock ? 0 : nextReleaseBlock;
     }
 
-    function withdrawFunds() external onlyOwner {
-        uint256 balance = address(this).balance;
-        require(balance > 0, "No funds to withdraw");
-        (bool sent, ) = owner().call{value: balance}("");
-        require(sent, "Failed to send Ether");
-        emit FundsWithdrawn(owner(), balance);
-    }
+    // function withdrawFunds() external onlyOwner {
+    //     uint256 balance = address(this).balance;
+    //     require(balance > 0, "No funds to withdraw");
+    //     (bool sent, ) = owner().call{value: balance}("");
+    //     require(sent, "Failed to send Ether");
+    //     emit FundsWithdrawn(owner(), balance);
+    // }
 
     function withdrawTokens() external onlyOwner {
         uint256 tokenBalance = token.balanceOf(address(this));
@@ -192,5 +192,12 @@ contract ICOContract is Ownable {
 
     function getTokenPriceEur() external pure returns (uint256) {
         return TOKEN_PRICE_EUR;
+    }
+
+    function icoStatus() external view returns (bool) {
+        if(icoActive && block.number > icoEndBlock) {
+            return false;
+        }
+        return icoActive;
     }
 }
