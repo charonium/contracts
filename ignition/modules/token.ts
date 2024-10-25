@@ -17,7 +17,6 @@ const TokenModule = buildModule("TokenModule", (m) => {
 
   // STEP 4: Deploy supporting contracts
   const icoContract = m.contract("ICOContract", [letheToken]);
-  // const tokenLock = m.contract("TokenLock", [letheToken]);
   const vestingContract = m.contract("TokenVesting", [letheToken]);
 
   // STEP 5: Setup vesting schedule timing

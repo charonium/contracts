@@ -9,11 +9,23 @@ import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 
 /************************************************
  *                                              *
- *            C H A R O N I U M                 *
+ *   ██████╗██╗  ██╗ █████╗ ██████╗  ██████╗    *
+ *  ██╔════╝██║  ██║██╔══██╗██╔══██╗██╔═══██╗   *
+ *  ██║     ███████║███████║██████╔╝██║   ██║   *
+ *  ██║     ██╔══██║██╔══██║██╔══██╗██║   ██║   *
+ *  ╚██████╗██║  ██║██║  ██║██║  ██║╚██████╔╝   *
+ *   ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝    *
+ *                                              *
+ *  ███╗   ██╗██╗██╗   ██╗███╗   ███╗           *
+ *  ████╗  ██║██║██║   ██║████╗ ████║           *
+ *  ██╔██╗ ██║██║██║   ██║██╔████╔██║           *
+ *  ██║╚██╗██║██║██║   ██║██║╚██╔╝██║           *
+ *  ██║ ╚████║██║╚██████╔╝██║ ╚═╝ ██║           *
+ *  ╚═╝  ╚═══╝╚═╝ ╚═════╝ ╚═╝     ╚═╝           *
  *                                              *
  ************************************************
  *                                              *
- *  Token Contract for $STYX                    *
+ *  Token Contract for Lethe (LETHE)            *
  *  Version: 1.0.0                              *
  *  Author: TP                                  *
  *  License: MIT                                *
@@ -21,7 +33,7 @@ import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
  ************************************************/
 
 /**
- * @title STYX TOKEN CONTRACT
+ * @title Lethe TOKEN CONTRACT
  * @dev Implements an ERC20 token with initial transfer restrictions and one-time transition to unrestricted transfers
  */
 contract Lethe is ERC20, ERC20Permit, Ownable, ERC20Burnable {
