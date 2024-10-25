@@ -23,7 +23,7 @@ import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.so
  *                                              *
  ************************************************
  *                                              *
- *  Token Contract for Lethe (LETHE)            *
+ *  Token Contract for STYX (ERC20)             *
  *  Version: 1.0.0                              *
  *  Author: TP                                  *
  *  License: MIT                                *
@@ -32,7 +32,7 @@ import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.so
 
 /**
  * @title ICOContract
- * @dev Implements an Initial Coin Offering (ICO) contract for the Lethe token
+ * @dev Implements an Initial Coin Offering (ICO) contract for the STYX token
  * @notice This contract manages the ICO process, including token sales, vesting, and claiming
  */
 contract ICOContract is Ownable {
@@ -110,7 +110,7 @@ contract ICOContract is Ownable {
 
     /**
      * @dev Constructor to initialize the ICOContract
-     * @param _token Address of the Lethe token contract
+     * @param _token Address of the STYX token contract
      */
     constructor(IERC20 _token) Ownable(msg.sender) {
         token = _token;
@@ -330,7 +330,7 @@ contract TokenHolder {
 
     /**
      * @dev Constructor to initialize the TokenHolder contract
-     * @param _token Address of the Lethe token contract
+     * @param _token Address of the STYX token contract
      * @param _owner Address of the ICOContract
      */
     constructor(IERC20 _token, address _owner) {

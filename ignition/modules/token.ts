@@ -7,17 +7,17 @@ const TokenModule = buildModule("TokenModule", (m) => {
   console.log("Deployer address:", deployer);
 
   // STEP 2: Deploy main token contract
-  const letheToken = m.contract("Lethe", []);
-  console.log("Lethe token deployment initiated");
+  const styxToken = m.contract("STYX", []);
+  console.log("STYX token deployment initiated");
 
   // STEP 3: Verify initial token supply
-  m.call(letheToken, "balanceOf", [deployer], {
+  m.call(styxToken, "balanceOf", [deployer], {
     id: "verify_initial_supply"
   });
 
   // STEP 4: Deploy supporting contracts
-  const icoContract = m.contract("ICOContract", [letheToken]);
-  const vestingContract = m.contract("TokenVesting", [letheToken]);
+  const icoContract = m.contract("ICOContract", [styxToken]);
+  const vestingContract = m.contract("TokenVesting", [styxToken]);
 
   // STEP 5: Setup vesting schedule timing
   const NOW = Math.floor(Date.now() / 1000) + (10); // 10 seconds buffer
@@ -108,7 +108,7 @@ const TokenModule = buildModule("TokenModule", (m) => {
   console.log("Setting up vesting schedules...");
 
   // Add vesting contract to whitelist first
-  m.call(letheToken, "addToWhitelist", [vestingContract], {
+  m.call(styxToken, "addToWhitelist", [vestingContract], {
     id: "whitelist_vesting_contract"
   });
 
@@ -117,7 +117,7 @@ const TokenModule = buildModule("TokenModule", (m) => {
     console.log(`Setting up vesting for ${config.name}`);
 
     // First transfer tokens to vesting contract
-    const transferCall = m.call(letheToken, "transfer", [vestingContract, config.amount], {
+    const transferCall = m.call(styxToken, "transfer", [vestingContract, config.amount], {
       id: `transfer_to_vesting_${config.name}`
     });
 
@@ -136,7 +136,7 @@ const TokenModule = buildModule("TokenModule", (m) => {
     });
 
     // Verify the transfer
-    m.call(letheToken, "balanceOf", [vestingContract], {
+    m.call(styxToken, "balanceOf", [vestingContract], {
       id: `verify_vesting_balance_${config.name}`
     });
   });
@@ -144,13 +144,13 @@ const TokenModule = buildModule("TokenModule", (m) => {
   // STEP 10: Whitelist setup
   // First whitelist deployer (is already whitelisted in the token contract constructor)
   console.log("Setting up whitelist...");
-  m.call(letheToken, "addToWhitelist", [deployer], {
+  m.call(styxToken, "addToWhitelist", [deployer], {
     id: "whitelist_deployer"
   });
 
   // Then whitelist all addresses
   whitelistedAddresses.forEach((address, index) => {
-    m.call(letheToken, "addToWhitelist", [address], {
+    m.call(styxToken, "addToWhitelist", [address], {
       id: `whitelist_address_${index}`
     });
   });
@@ -159,13 +159,13 @@ const TokenModule = buildModule("TokenModule", (m) => {
   console.log("Processing direct transfers...");
   directAllocations.forEach((allocation, index) => {
     // Check balance before transfer
-    m.call(letheToken, "balanceOf", [deployer], {
+    m.call(styxToken, "balanceOf", [deployer], {
       id: `pre_direct_balance_${index}`
     });
 
     // Transfer tokens
-    console.log(`Transferring ${formatEther(allocation.amount)} LETHE to ${allocation.name}`);
-    m.call(letheToken, "transfer", [
+    console.log(`Transferring ${formatEther(allocation.amount)} STYX to ${allocation.name}`);
+    m.call(styxToken, "transfer", [
       allocation.address,
       allocation.amount
     ], {
@@ -180,9 +180,9 @@ const TokenModule = buildModule("TokenModule", (m) => {
   const totalDistributed = totalVested + totalDirect;
   const expectedTotal = parseEther("690000000");
 
-  console.log(`Total vested: ${formatEther(totalVested)} LETHE`);
-  console.log(`Total direct: ${formatEther(totalDirect)} LETHE`);
-  console.log(`Total distributed: ${formatEther(totalDistributed)} LETHE`);
+  console.log(`Total vested: ${formatEther(totalVested)} STYX`);
+  console.log(`Total direct: ${formatEther(totalDirect)} STYX`);
+  console.log(`Total distributed: ${formatEther(totalDistributed)} STYX`);
 
   if (totalDistributed !== expectedTotal) {
     throw new Error(`Distribution mismatch: ${formatEther(totalDistributed)} != ${formatEther(expectedTotal)}`);
@@ -190,7 +190,7 @@ const TokenModule = buildModule("TokenModule", (m) => {
 
   // LAST STEP: Return deployed contracts
   return {
-    letheToken,
+    styxToken,
     icoContract,
     vestingContract,
   };

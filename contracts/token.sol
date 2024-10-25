@@ -25,7 +25,7 @@ import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
  *                                              *
  ************************************************
  *                                              *
- *  Token Contract for Lethe (LETHE)            *
+ *  Token Contract for STYX (ERC20)             *
  *  Version: 1.0.0                              *
  *  Author: TP                                  *
  *  License: MIT                                *
@@ -33,10 +33,10 @@ import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
  ************************************************/
 
 /**
- * @title Lethe TOKEN CONTRACT
+ * @title STYX TOKEN CONTRACT
  * @dev Implements an ERC20 token with initial transfer restrictions and one-time transition to unrestricted transfers
  */
-contract Lethe is ERC20, ERC20Permit, Ownable, ERC20Burnable {
+contract STYX is ERC20, ERC20Permit, Ownable, ERC20Burnable {
     /**
      * @dev BitMap to store whitelisted addresses
      */
@@ -49,9 +49,9 @@ contract Lethe is ERC20, ERC20Permit, Ownable, ERC20Burnable {
     event AddedToWhitelist(address indexed account);
 
     /**
-     * @dev Initialize the Lethe token
+     * @dev Initialize the STYX token
      */
-    constructor() ERC20("Lethe", "LETHE") ERC20Permit("Lethe") Ownable(msg.sender) {
+    constructor() ERC20("STYX", "STYX") ERC20Permit("STYX") Ownable(msg.sender) {
         _mint(msg.sender, 690_000_000 ether);
         _addToWhitelist(msg.sender);
     }
