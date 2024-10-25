@@ -10,7 +10,10 @@ let {
   BASE_SEPOLIA_PRIVATE_KEY,
   BASE_URL,
   BASE_MNEMONIC,
-  CREATE2_SALT
+  CREATE2_SALT,
+  BASE_TENDERLY_PRIVATE_KEY,
+  BASE_TENDERLY_URL,
+  BASE_TENDERLY_API_KEY
 } = process.env;
 
 BASESCAN_API_KEY ??= ""
@@ -52,11 +55,18 @@ const config: HardhatUserConfig = {
       accounts: [BASE_SEPOLIA_PRIVATE_KEY!],
       gasMultiplier: 1.01
     },
+    baseTenderly: {
+      chainId: 8453,
+      url: BASE_TENDERLY_URL,
+      accounts: [BASE_TENDERLY_PRIVATE_KEY!],
+      gasMultiplier: 1.01
+    }
   },
   etherscan: {
     apiKey: {
       base: BASESCAN_API_KEY,
-      baseSepolia: BASESCAN_API_KEY
+      baseSepolia: BASESCAN_API_KEY,
+      baseTenderly: BASE_TENDERLY_API_KEY!
     },
 
     customChains: [
@@ -66,6 +76,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://api-sepolia.basescan.org/api",
           browserURL: "https://sepolia.basescan.org"
+        }
+      },
+      {
+        network: "baseTenderly",
+        chainId: 8453,
+        urls: {
+          apiURL: "https://virtual.base.rpc.tenderly.co/caaf18c6-31f3-4122-8f53-defe8058c392/verify/etherscan",
+          browserURL: "https://dashboard.tenderly.co/explorer/vnet/a0edfdd2-7f0c-43f4-96fc-525dc75685ff/transactions"
         }
       }
     ]

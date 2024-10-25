@@ -7,8 +7,21 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 
+/************************************************
+ *                                              *
+ *            C H A R O N I U M                 *
+ *                                              *
+ ************************************************
+ *                                              *
+ *  Token Contract for $STYX                    *
+ *  Version: 1.0.0                              *
+ *  Author: TP                                  *
+ *  License: MIT                                *
+ *                                              *
+ ************************************************/
+
 /**
- * @title LETHE TOKEN CONTRACT
+ * @title STYX TOKEN CONTRACT
  * @dev Implements an ERC20 token with initial transfer restrictions and one-time transition to unrestricted transfers
  */
 contract Lethe is ERC20, ERC20Permit, Ownable, ERC20Burnable {
@@ -24,7 +37,7 @@ contract Lethe is ERC20, ERC20Permit, Ownable, ERC20Burnable {
     event AddedToWhitelist(address indexed account);
 
     /**
-     * @dev Constructor to initialize the Lethe token
+     * @dev Initialize the Lethe token
      */
     constructor() ERC20("Lethe", "LETHE") ERC20Permit("Lethe") Ownable(msg.sender) {
         _mint(msg.sender, 690_000_000 ether);
@@ -39,7 +52,6 @@ contract Lethe is ERC20, ERC20Permit, Ownable, ERC20Burnable {
         require(!transfersEnabled, "Transfers are already enabled");
         transfersEnabled = true;
         emit TransfersEnabled();
-        delete _whitelist;
     }
 
     /**
@@ -57,11 +69,11 @@ contract Lethe is ERC20, ERC20Permit, Ownable, ERC20Burnable {
         super._update(from, to, value);
     }
 
-        /**
+    /**
      * @dev Adds an account to the whitelist. Can only be called by the owner.
      * @param account The address to be added to the whitelist
      */
-    function addToWhitelist(address account) external {
+    function addToWhitelist(address account) external onlyOwner {
         _addToWhitelist(account);
     }
 
@@ -81,5 +93,9 @@ contract Lethe is ERC20, ERC20Permit, Ownable, ERC20Burnable {
      */
     function isWhitelisted(address account) public view returns (bool) {
         return _whitelist.get(uint160(account));
+    }
+
+    function removeFromWhitelist(address account) external onlyOwner {
+        _whitelist.unset(uint160(account));
     }
 }
